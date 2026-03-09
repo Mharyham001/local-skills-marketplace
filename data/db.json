@@ -1,0 +1,30 @@
+{
+  "users": [
+    {
+      "id": "0c10b308-5a90-4d55-a720-e40d7756090d",
+      "name": "Campus Plumber",
+      "email": "plumber@example.com",
+      "password": "$2a$10$Kw39ycChnV86ZD2fzsmFTOaBahd1.Yt867AjoDXVsj.97mmhdOZ8i",
+      "role": "artisan",
+      "phone": "08106305770",
+      "location": "Lagos",
+      "skill": "Plumber",
+      "description": "Fast and reliable plumbing services for homes and offices.",
+      "yearsExperience": "3",
+      "createdAt": "2026-03-09T10:16:07.374Z"
+    },
+    {
+      "id": "93d28cc6-7fc5-4d3b-9e16-58fe49fb8883",
+      "name": "Demo Electrician",
+      "email": "electrician@example.com",
+      "password": "$2a$10$h2LvpUvUSVgDuLA7UTX13uBZ/4T5k4Ps82lI0pNKGSb1ziQupAT9m",
+      "role": "artisan",
+      "phone": "08030000002",
+      "location": "Abuja",
+      "skill": "Electrician",
+      "description": "Electrical wiring, repairs, and installations.",
+      "yearsExperience": 7,
+      "createdAt": "2026-03-09T10:16:07.489Z"
+    }
+  ]
+}

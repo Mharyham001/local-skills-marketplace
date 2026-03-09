@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local Skills Marketplace</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="brand">SkillConnect</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#artisans">Artisans</a>
+      <a href="#register">Register</a>
+      <a href="#login">Login</a>
+      <a href="#dashboard" id="dashboardLink" class="hidden">Dashboard</a>
+      <button id="logoutBtn" class="hidden small-btn danger">Logout</button>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1>Find trusted local artisans near you</h1>
+      <p>Connect with plumbers, electricians, tailors, carpenters and other skilled workers in your area.</p>
+      <div class="hero-actions">
+        <a href="#artisans" class="btn primary">Browse artisans</a>
+        <a href="#register" class="btn secondary">Join as artisan</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stat-card"><h3 id="artisanCount">0</h3><p>Artisans listed</p></div>
+    <div class="stat-card"><h3>30+</h3><p>Possible skill categories</p></div>
+    <div class="stat-card"><h3>24/7</h3><p>Online access</p></div>
+  </section>
+
+  <section id="artisans" class="section">
+    <div class="section-header">
+      <h2>Browse artisans</h2>
+      <p>Search by skill, location, or any keyword.</p>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search by name, skill, or keyword" />
+      <input type="text" id="skillInput" placeholder="Skill e.g. Electrician" />
+      <input type="text" id="locationInput" placeholder="Location e.g. Lagos" />
+      <button id="searchBtn" class="btn primary">Search</button>
+    </div>
+
+    <div id="artisanList" class="grid"></div>
+  </section>
+
+  <section id="register" class="section light">
+    <div class="section-header">
+      <h2>Create account</h2>
+      <p>Customers and artisans can both register.</p>
+    </div>
+
+    <form id="registerForm" class="card form-card">
+      <div class="form-grid">
+        <input type="text" name="name" placeholder="Full name" required />
+        <input type="email" name="email" placeholder="Email address" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <input type="text" name="phone" placeholder="Phone number" required />
+        <input type="text" name="location" placeholder="Location" required />
+        <select name="role" id="roleSelect" required>
+          <option value="customer">Customer</option>
+          <option value="artisan">Artisan</option>
+        </select>
+      </div>
+
+      <div id="artisanFields" class="form-grid hidden">
+        <input type="text" name="skill" placeholder="Your skill e.g. Tailor" />
+        <input type="number" name="yearsExperience" placeholder="Years of experience" min="0" />
+        <textarea name="description" placeholder="Describe your service"></textarea>
+      </div>
+
+      <button type="submit" class="btn primary">Register</button>
+      <p id="registerMessage" class="message"></p>
+    </form>
+  </section>
+
+  <section id="login" class="section">
+    <div class="section-header">
+      <h2>Login</h2>
+      <p>Access your account and manage your profile.</p>
+    </div>
+
+    <form id="loginForm" class="card form-card slim">
+      <input type="email" name="email" placeholder="Email address" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit" class="btn primary">Login</button>
+      <p id="loginMessage" class="message"></p>
+      <div class="demo-box">
+        <strong>Demo artisan login:</strong><br />
+        plumber@example.com / password123
+      </div>
+    </form>
+  </section>
+
+  <section id="dashboard" class="section light hidden">
+    <div class="section-header">
+      <h2>My dashboard</h2>
+      <p>Update your profile information.</p>
+    </div>
+
+    <div class="card dashboard-card">
+      <div id="profileInfo"></div>
+
+      <form id="updateForm" class="form-card hidden">
+        <div class="form-grid">
+          <input type="text" name="name" placeholder="Full name" />
+          <input type="text" name="phone" placeholder="Phone number" />
+          <input type="text" name="location" placeholder="Location" />
+          <input type="text" name="skill" placeholder="Skill" />
+          <input type="number" name="yearsExperience" placeholder="Years of experience" min="0" />
+          <textarea name="description" placeholder="Describe your service"></textarea>
+        </div>
+        <button type="submit" class="btn primary">Save changes</button>
+        <p id="updateMessage" class="message"></p>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Built for assignment submission: Local Skills Marketplace</p>
+  </footer>
+
+  <script src="/script.js"></script>
+</body>
+</html>
