@@ -59,6 +59,7 @@ const dashboardLink = document.getElementById('dashboardLink');
 const logoutBtn = document.getElementById('logoutBtn');
 const profileInfo = document.getElementById('profileInfo');
 const updateForm = document.getElementById('updateForm');
+const artisanOnlyFields = document.getElementById('artisanOnlyFields');
 const updateMessage = document.getElementById('updateMessage');
 
 const pageSections = document.querySelectorAll('.page-section');
@@ -206,12 +207,17 @@ async function loadProfile() {
   `;
 
   updateForm.classList.remove('hidden');
-  updateForm.name.value = user.name || '';
-  updateForm.phone.value = user.phone || '';
-  updateForm.location.value = user.location || '';
+updateForm.name.value = user.name || '';
+updateForm.phone.value = user.phone || '';
+updateForm.location.value = user.location || '';
+
+if (user.role === 'artisan') {
+  artisanOnlyFields.classList.remove('hidden');
   updateForm.skill.value = user.skill || '';
   updateForm.yearsExperience.value = user.yearsExperience || '';
   updateForm.description.value = user.description || '';
+} else {
+  artisanOnlyFields.classList.add('hidden');
 }
 
 if (updateForm) {
