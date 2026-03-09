@@ -60,6 +60,27 @@ const logoutBtn = document.getElementById('logoutBtn');
 const profileInfo = document.getElementById('profileInfo');
 const updateForm = document.getElementById('updateForm');
 const updateMessage = document.getElementById('updateMessage');
+const pageSections = document.querySelectorAll('.page-section');
+const navLinks = document.querySelectorAll('nav a[data-section]');
+
+function showSection(sectionId) {
+  pageSections.forEach(section => {
+    section.classList.add('hidden');
+  });
+
+  const target = document.getElementById(sectionId);
+  if (target) {
+    target.classList.remove('hidden');
+  }
+}
+
+navLinks.forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const sectionId = link.dataset.section;
+    showSection(sectionId);
+  });
+});
 
 function showMessage(el, text, isError = false) {
   el.textContent = text;

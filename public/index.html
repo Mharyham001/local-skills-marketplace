@@ -10,16 +10,15 @@
   <header class="navbar">
     <div class="brand">SkillConnect</div>
     <nav>
-      <a href="#home">Home</a>
-      <a href="#artisans">Artisans</a>
-      <a href="#register">Register</a>
-      <a href="#login">Login</a>
-      <a href="#dashboard" id="dashboardLink" class="hidden">Dashboard</a>
-      <button id="logoutBtn" class="hidden small-btn danger">Logout</button>
+     <a href="#" data-section="home">Home</a>
+     <a href="#" data-section="artisans">Artisans</a>
+     <a href="#" data-section="register">Register</a>
+     <a href="#" data-section="login">Login</a>
+     <a href="#" data-section="dashboard" id="dashboardLink" class="hidden">Dashboard</a>
     </nav>
   </header>
 
-  <section id="home" class="hero">
+  <section id="home" class="hero page-section">
     <div class="hero-content">
       <h1>Find trusted local artisans near you</h1>
       <p>Connect with plumbers, electricians, tailors, carpenters and other skilled workers in your area.</p>
@@ -36,7 +35,7 @@
     <div class="stat-card"><h3>24/7</h3><p>Online access</p></div>
   </section>
 
-  <section id="artisans" class="section">
+  <section id="artisans" class="section page-section hidden">
     <div class="section-header">
       <h2>Browse artisans</h2>
       <p>Search by skill, location, or any keyword.</p>
@@ -52,7 +51,7 @@
     <div id="artisanList" class="grid"></div>
   </section>
 
-  <section id="register" class="section light">
+  <section id="register" class="section light page-section hidden">
     <div class="section-header">
       <h2>Create account</h2>
       <p>Customers and artisans can both register.</p>
@@ -82,7 +81,7 @@
     </form>
   </section>
 
-  <section id="login" class="section">
+  <section id="login" class="section page-section hidden">
     <div class="section-header">
       <h2>Login</h2>
       <p>Access your account and manage your profile.</p>
@@ -100,7 +99,7 @@
     </form>
   </section>
 
-  <section id="dashboard" class="section light hidden">
+  <section id="dashboard" class="section light page-section hidden">
     <div class="section-header">
       <h2>My dashboard</h2>
       <p>Update your profile information.</p>
