@@ -54,16 +54,15 @@ const registerMessage = document.getElementById('registerMessage');
 const loginForm = document.getElementById('loginForm');
 const loginMessage = document.getElementById('loginMessage');
 const searchBtn = document.getElementById('searchBtn');
-const dashboardSection = document.getElementById('dashboard');
 const dashboardLink = document.getElementById('dashboardLink');
 const logoutBtn = document.getElementById('logoutBtn');
 const profileInfo = document.getElementById('profileInfo');
 const updateForm = document.getElementById('updateForm');
-const artisanOnlyFields = document.getElementById('artisanOnlyFields');
 const updateMessage = document.getElementById('updateMessage');
+const artisanOnlyFields = document.getElementById('artisanOnlyFields');
 
 const pageSections = document.querySelectorAll('.page-section');
-const navLinks = document.querySelectorAll('nav a[data-section]');
+const sectionLinks = document.querySelectorAll('[data-section]');
 
 function showMessage(el, text, isError = false) {
   if (!el) return;
@@ -82,7 +81,7 @@ function showSection(sectionId) {
   }
 }
 
-navLinks.forEach(link => {
+sectionLinks.forEach(link => {
   link.addEventListener('click', (e) => {
     e.preventDefault();
     const sectionId = link.dataset.section;
@@ -93,8 +92,10 @@ navLinks.forEach(link => {
 function renderArtisans(artisans) {
   if (artisanCount) artisanCount.textContent = artisans.length;
 
-  if (!artisans.length) {
-    artisanList.innerHTML = '<div class="card">No artisans found.</div>';
+  if (!artisans || !artisans.length) {
+    if (artisanList) {
+      artisanList.innerHTML = '<div class="card">No artisans found.</div>';
+    }
     return;
   }
 
@@ -111,8 +112,14 @@ function renderArtisans(artisans) {
 }
 
 async function loadArtisans() {
-  const artisans = await api.getArtisans();
-  renderArtisans(artisans);
+  try {
+    const artisans = await api.getArtisans();
+    renderArtisans(artisans);
+  } catch (error) {
+    if (artisanList) {
+      artisanList.innerHTML = '<div class="card">Failed to load artisans.</div>';
+    }
+  }
 }
 
 if (roleSelect) {
@@ -124,22 +131,28 @@ if (roleSelect) {
 if (registerForm) {
   registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const formData = new FormData(registerForm);
     const payload = Object.fromEntries(formData.entries());
 
-    const result = await api.register(payload);
-    if (result.token) {
-      localStorage.setItem('token', result.token);
-      localStorage.setItem('user', JSON.stringify(result.user));
-      showMessage(registerMessage, 'Registration successful. You are now logged in.');
-      registerForm.reset();
-      artisanFields.classList.add('hidden');
-      updateAuthUI();
-      await loadArtisans();
-      await loadProfile();
-      showSection('dashboard');
-    } else {
-      showMessage(registerMessage, result.message || 'Registration failed', true);
+    try {
+      const result = await api.register(payload);
+
+      if (result.token) {
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        showMessage(registerMessage, 'Registration successful. You are now logged in.');
+        registerForm.reset();
+        artisanFields.classList.add('hidden');
+        updateAuthUI();
+        await loadArtisans();
+        await loadProfile();
+        showSection('dashboard');
+      } else {
+        showMessage(registerMessage, result.message || 'Registration failed', true);
+      }
+    } catch (error) {
+      showMessage(registerMessage, 'Registration failed', true);
     }
   });
 }
@@ -147,20 +160,26 @@ if (registerForm) {
 if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const formData = new FormData(loginForm);
     const payload = Object.fromEntries(formData.entries());
 
-    const result = await api.login(payload);
-    if (result.token) {
-      localStorage.setItem('token', result.token);
-      localStorage.setItem('user', JSON.stringify(result.user));
-      showMessage(loginMessage, 'Login successful.');
-      loginForm.reset();
-      updateAuthUI();
-      await loadProfile();
-      showSection('dashboard');
-    } else {
-      showMessage(loginMessage, result.message || 'Login failed', true);
+    try {
+      const result = await api.login(payload);
+
+      if (result.token) {
+        localStorage.setItem('token', result.token);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        showMessage(loginMessage, 'Login successful.');
+        loginForm.reset();
+        updateAuthUI();
+        await loadProfile();
+        showSection('dashboard');
+      } else {
+        showMessage(loginMessage, result.message || 'Login failed', true);
+      }
+    } catch (error) {
+      showMessage(loginMessage, 'Login failed', true);
     }
   });
 }
@@ -170,8 +189,16 @@ if (searchBtn) {
     const search = document.getElementById('searchInput').value.trim();
     const skill = document.getElementById('skillInput').value.trim();
     const location = document.getElementById('locationInput').value.trim();
-    const artisans = await api.getArtisans({ search, skill, location });
-    renderArtisans(artisans);
+
+    try {
+      const artisans = await api.getArtisans({ search, skill, location });
+      renderArtisans(artisans);
+      showSection('artisans');
+    } catch (error) {
+      if (artisanList) {
+        artisanList.innerHTML = '<div class="card">Search failed.</div>';
+      }
+    }
   });
 }
 
@@ -180,8 +207,11 @@ if (logoutBtn) {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     updateAuthUI();
+
     if (profileInfo) profileInfo.innerHTML = '';
     if (updateForm) updateForm.classList.add('hidden');
+    if (artisanOnlyFields) artisanOnlyFields.classList.add('hidden');
+
     showSection('home');
   });
 }
@@ -190,49 +220,66 @@ async function loadProfile() {
   const token = localStorage.getItem('token');
   if (!token) return;
 
-  const user = await api.getMe();
-  if (user.message) return;
+  try {
+    const user = await api.getMe();
+    if (user.message) return;
 
-  profileInfo.innerHTML = `
-    <h3>Welcome, ${user.name}</h3>
-    <p><strong>Email:</strong> ${user.email || '-'}</p>
-    <p><strong>Role:</strong> ${user.role || '-'}</p>
-    <p><strong>Phone:</strong> ${user.phone || '-'}</p>
-    <p><strong>Location:</strong> ${user.location || '-'}</p>
-    ${user.role === 'artisan' ? `
-      <p><strong>Skill:</strong> ${user.skill || '-'}</p>
-      <p><strong>Experience:</strong> ${user.yearsExperience || 0} years</p>
-      <p><strong>Description:</strong> ${user.description || '-'}</p>
-    ` : '<p><strong>Account Type:</strong> Customer account</p>'}
-  `;
+    profileInfo.innerHTML = `
+      <h3>Welcome, ${user.name}</h3>
+      <p><strong>Email:</strong> ${user.email || '-'}</p>
+      <p><strong>Role:</strong> ${user.role || '-'}</p>
+      <p><strong>Phone:</strong> ${user.phone || '-'}</p>
+      <p><strong>Location:</strong> ${user.location || '-'}</p>
+      ${user.role === 'artisan'
+        ? `
+          <p><strong>Skill:</strong> ${user.skill || '-'}</p>
+          <p><strong>Experience:</strong> ${user.yearsExperience || 0} years</p>
+          <p><strong>Description:</strong> ${user.description || '-'}</p>
+        `
+        : `<p><strong>Account Type:</strong> Customer account</p>`
+      }
+    `;
 
-  updateForm.classList.remove('hidden');
-updateForm.name.value = user.name || '';
-updateForm.phone.value = user.phone || '';
-updateForm.location.value = user.location || '';
+    updateForm.classList.remove('hidden');
+    updateForm.name.value = user.name || '';
+    updateForm.phone.value = user.phone || '';
+    updateForm.location.value = user.location || '';
 
-if (user.role === 'artisan') {
-  artisanOnlyFields.classList.remove('hidden');
-  updateForm.skill.value = user.skill || '';
-  updateForm.yearsExperience.value = user.yearsExperience || '';
-  updateForm.description.value = user.description || '';
-} else {
-  artisanOnlyFields.classList.add('hidden');
+    if (user.role === 'artisan') {
+      artisanOnlyFields.classList.remove('hidden');
+      updateForm.skill.value = user.skill || '';
+      updateForm.yearsExperience.value = user.yearsExperience || '';
+      updateForm.description.value = user.description || '';
+    } else {
+      artisanOnlyFields.classList.add('hidden');
+      updateForm.skill.value = '';
+      updateForm.yearsExperience.value = '';
+      updateForm.description.value = '';
+    }
+  } catch (error) {
+    profileInfo.innerHTML = '<p>Failed to load profile.</p>';
+  }
 }
 
 if (updateForm) {
   updateForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const formData = new FormData(updateForm);
     const payload = Object.fromEntries(formData.entries());
-    const result = await api.updateMe(payload);
 
-    if (result.user) {
-      showMessage(updateMessage, 'Profile updated successfully.');
-      await loadProfile();
-      await loadArtisans();
-    } else {
-      showMessage(updateMessage, result.message || 'Update failed', true);
+    try {
+      const result = await api.updateMe(payload);
+
+      if (result.user) {
+        showMessage(updateMessage, 'Profile updated successfully.');
+        await loadProfile();
+        await loadArtisans();
+      } else {
+        showMessage(updateMessage, result.message || 'Update failed', true);
+      }
+    } catch (error) {
+      showMessage(updateMessage, 'Update failed', true);
     }
   });
 }

@@ -3,29 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Local Skills Marketplace</title>
+  <title>LASU Skills Marketplace</title>
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <header class="navbar">
-    <div class="brand">SkillConnect</div>
+    <div class="brand">LASU SkillConnect</div>
     <nav>
-     <a href="#" data-section="home">Home</a>
-     <a href="#" data-section="artisans">Artisans</a>
-     <a href="#" data-section="register">Register</a>
-     <a href="#" data-section="login">Login</a>
-     <a href="#" data-section="dashboard" id="dashboardLink" class="hidden">Dashboard</a>
-     <button id="logoutBtn" class="hidden small-btn danger">Logout</button>
+      <a href="#" data-section="home">Home</a>
+      <a href="#" data-section="artisans">Artisans</a>
+      <a href="#" data-section="register">Register</a>
+      <a href="#" data-section="login">Login</a>
+      <a href="#" data-section="dashboard" id="dashboardLink" class="hidden">Dashboard</a>
+      <button id="logoutBtn" class="hidden small-btn danger" type="button">Logout</button>
     </nav>
   </header>
 
   <section id="home" class="hero page-section">
     <div class="hero-content">
-      <h1>Find trusted local artisans near you</h1>
-      <p>Connect with plumbers, electricians, tailors, carpenters and other skilled workers in your area.</p>
+      <h1>Find trusted artisans around LASU</h1>
+      <p>Connect with plumbers, electricians, tailors, carpenters and other skilled workers around Lagos State University.</p>
       <div class="hero-actions">
-        <a href="#artisans" class="btn primary">Browse artisans</a>
-        <a href="#register" class="btn secondary">Join as artisan</a>
+        <a href="#" class="btn primary" data-section="artisans">Browse artisans</a>
+        <a href="#" class="btn secondary" data-section="register">Join as artisan</a>
       </div>
     </div>
   </section>
@@ -45,8 +45,8 @@
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Search by name, skill, or keyword" />
       <input type="text" id="skillInput" placeholder="Skill e.g. Electrician" />
-      <input type="text" id="locationInput" placeholder="Location e.g. Lagos" />
-      <button id="searchBtn" class="btn primary">Search</button>
+      <input type="text" id="locationInput" placeholder="Location e.g. LASU Ojo Campus" />
+      <button id="searchBtn" class="btn primary" type="button">Search</button>
     </div>
 
     <div id="artisanList" class="grid"></div>
@@ -115,19 +115,21 @@
           <input type="text" name="phone" placeholder="Phone number" />
           <input type="text" name="location" placeholder="Location" />
         </div>
+
         <div id="artisanOnlyFields" class="form-grid hidden">
           <input type="text" name="skill" placeholder="Skill" />
           <input type="number" name="yearsExperience" placeholder="Years of experience" min="0" />
           <textarea name="description" placeholder="Describe your service"></textarea>
         </div>
-          <button type="submit" class="btn primary">Save changes</button>
-          <p id="updateMessage" class="message"></p>
-        </form>
+
+        <button type="submit" class="btn primary">Save changes</button>
+        <p id="updateMessage" class="message"></p>
+      </form>
     </div>
   </section>
 
   <footer class="footer">
-    <p>Built for assignment submission: Local Skills Marketplace</p>
+    <p>Built for assignment submission: LASU Local Skills Marketplace</p>
   </footer>
 
   <script src="/script.js"></script>
